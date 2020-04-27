@@ -212,10 +212,10 @@ class Graph:
         # and checking them if they are the destination vertex.  if they are not the
         # destination vertex, then get neighbors and rerun the function
 
-        # create our visited vertices vertices array if it doesn't exist already
+        # create our visited vertices vertices array if it is None
         if visited_vertices is None:
             visited_vertices = set()
-        # create our path array if it doesn't exist already
+        # create our path array if it is None
         if path is None:
             path = []
         # mark it as visited
@@ -231,7 +231,7 @@ class Graph:
             if vertex not in visited_vertices:
                 # run the function again, and pass down the visited vertices and path
                 new_path = self.dfs_recursive(vertex, destination_vertex, visited_vertices, path)
-                print(f'new path {new_path}')
+                # print(f'new path {new_path}')
                 # if new_path returns a valid path, return it
                 if new_path:
                     return new_path
