@@ -1,3 +1,5 @@
+import random
+
 class User:
     def __init__(self, name):
         self.name = name
@@ -42,11 +44,24 @@ class SocialGraph:
         self.last_id = 0
         self.users = {}
         self.friendships = {}
-        # !!!! IMPLEMENT ME
-
         # Add users
-
-        # Create friendships
+        for i in range(0, num_users):
+            self.add_user(f"User {i}")
+        # Create Frienships
+        # Generate all possible friendship combinations
+        possible_friendships = []
+        # Avoid duplicates by ensuring the first number is smaller than the second
+        for user_id in self.users:
+            for friend_id in range(user_id + 1, self.last_id + 1):
+                possible_friendships.append((user_id, friend_id))
+        # Shuffle the possible friendships
+        random.shuffle(possible_friendships)
+        # Create friendships for the first X pairs of the list
+        # X is determined by the formula: num_users * avg_friendships // 2
+        # Need to divide by 2 since each add_friendship() creates 2 friendships
+        for i in range(num_users * avg_friendships // 2):
+            friendship = possible_friendships[i]
+            self.add_friendship(friendship[0], friendship[1])
 
     def get_all_social_paths(self, user_id):
         """
@@ -59,6 +74,35 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+        visited[user_id] = [user_id]
+        # print(visited)
+        # create a queue
+        queue = []
+        # add the first value to the queue
+        queue.append([user_id])
+        
+        print(f"Starting friendships list is {self.friendships}")
+
+        # Grab the user_id & check to see who it's friends are
+        # While len(queue) > 0:
+        while len(queue) > 0:
+            # pop the first value from the queue
+            path = queue.pop(0)
+            # grab the friend id 
+            current_friend = path[-1]
+
+            # For every friend in self.friendships for current_friend
+            for friend in self.friendships[current_friend]:
+                # if we have not visited this friend
+                if friend not in visited:
+                    print(friend)
+                    visited[friend] = path
+                    # Add it and its path to visited
+                    new_path = list(path)
+                    new_path.append(friend)
+                    queue.append(new_path)
+
+        # return visited
         return visited
 
 
